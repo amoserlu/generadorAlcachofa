@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de La Remolacha - Profesional</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --border-green: #5e9b2d;
+            --wood-brown: #6d4c2b;
+            --gold-text: #d4a76a;
+            --divider: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Panel de Control (Interfaz en Español) */
+        .ui-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .btn-container { display: flex; gap: 10px; }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .btn-update { background: #3498db; color: white; }
+        .btn-pdf { background: #27ae60; color: white; }
+
+        /* A4 Sheet with Crop Marks */
+        #print-area {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            padding: 10mm; /* Margin for printer safety */
+            display: grid;
+            grid-template-columns: repeat(2, 90mm);
+            grid-template-rows: repeat(4, 60mm);
+            gap: 5mm;
+            justify-content: center;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        /* Card Design */
+        .card {
+            width: 90mm;
+            height: 60mm;
+            background-color: var(--border-green);
+            border-radius: 12px;
+            padding: 8px;
+            box-sizing: border-box;
+            position: relative;
+            outline: 0.2mm dashed #eee; /* Light guide for cutting */
+        }
+
+        .card-id {
+            position: absolute; top: 10px; right: 10px;
+            background: white; width: 22px; height: 22px;
+            border-radius: 50%; display: flex;
+            justify-content: center; align-items: center;
+            font-size: 14px; color: black; z-index: 10;
+        }
+
+        .card-table {
+            background-color: var(--wood-brown);
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    transparent 8px,
+                    rgba(0,0,0,0.08) 8px,
+                    rgba(0,0,0,0.08) 9px,
+                    transparent 9px,
+                    transparent 15px,
+                    rgba(0,0,0,0.05) 15px,
+                    rgba(0,0,0,0.05) 16px,
+                    transparent 16px,
+                    transparent 25px,
+                    rgba(0,0,0,0.07) 25px,
+                    rgba(0,0,0,0.07) 26px,
+                    transparent 26px,
+                    transparent 35px
+                );
+            height: 100%;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 30px 1fr 1fr 1fr 25px;
+            grid-template-rows: 22px repeat(10, 1fr);
+            color: white;
+            padding: 4px;
+            text-align: center;
+            align-items: center;
+            border: 1px solid #4a3219;
+            box-sizing: border-box;
+        }
+
+        .h-col { font-size: 13px; font-weight: 900; }
+        .r-idx { font-size: 11px; color: var(--gold-text); font-weight: bold; }
+        
+        /* The words with a row border (The missing lines) */
+        .word-cell {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px black;
+            border-bottom: 1px solid var(--divider);
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .side-text {
+            grid-row: 2 / span 10;
+            grid-column: 5;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 7px;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        @media print {
+            .ui-panel { display: none; }
+            body { padding: 0; background: none; }
+            #print-area { box-shadow: none; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <h2>Generador de Cartas "La Remolacha"</h2>
+        <p>Escribe 30 palabras, una por línea. Usa una línea en blanco para separar cartas.</p>
+        <textarea id="wordsInput">TORRE
+FIDEO
+BARRO
+REMOLACHA
+ESCORPIÓN
+PIEZA
+BANCO
+COFRE
+TEMPRANO
+SOMBRA
+ESPÍA
+ACEITUNA
+DISNEY
+MÚSICA
+PARAGUAS
+BESTIA
+ENTRENADOR
+DICIEMBRE
+CIENCIA
+COCINA
+NARANJA
+ÁNGEL
+REFLEJO
+CALCETÍN
+ARROZ
+KOALA
+POCIÓN
+CINTA
+PLAYA
+PIRULETA</textarea>
+        <div class="btn-container">
+            <button class="btn-update" id="btnPreview">Actualizar Vista Previa</button>
+            <button class="btn-pdf" id="btnPdf">Descargar PDF (8 cartas)</button>
+        </div>
+    </div>
+
+    <div id="print-area">
+        </div>
+
+    <script>
+        // Use DOMContentLoaded to avoid "not defined" errors
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('wordsInput');
+            const container = document.getElementById('print-area');
+            const previewBtn = document.getElementById('btnPreview');
+            const pdfBtn = document.getElementById('btnPdf');
+
+            function refreshCards() {
+                container.innerHTML = '';
+                const allLines = input.value.trim().split('\n');
+                const words = allLines.map(w => w.trim()).filter(w => w !== '');
+                
+                // Print exactly 8 cards (all with same words for now)
+                for (let i = 0; i < 8; i++) {
+                    container.appendChild(createCard(i + 1, words));
+                }
+            }
+
+            function createCard(id, wordsList) {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                
+                let html = `
+                    <div class="card-id">${id}</div>
+                    <div class="card-table">
+                        <div></div><div class="h-col">A</div><div class="h-col">B</div><div class="h-col">C</div><div></div>
+                `;
+
+                for (let r = 0; r < 10; r++) {
+                    html += `<div class="r-idx">${r + 1}</div>`;
+                    for (let c = 0; c < 3; c++) {
+                        const word = wordsList[r * 3 + c] || "";
+                        html += `<div class="word-cell">${word}</div>`;
+                    }
+                    if (r === 0) html += `<div class="side-text">AGENTE HORTICULTOR</div>`;
+                }
+
+                html += `</div>`;
+                cardDiv.innerHTML = html;
+                return cardDiv;
+            }
+
+            previewBtn.onclick = refreshCards;
+
+            pdfBtn.onclick = () => {
+                const element = document.getElementById('print-area');
+                const opt = {
+                    margin: 0,
+                    filename: 'remolacha_cartas.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 3 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save();
+            };
+
+            // Initial render
+            refreshCards();
+        });
+    </script>
+</body>
+</html>
