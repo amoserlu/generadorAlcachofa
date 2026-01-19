@@ -357,11 +357,19 @@ PIRULETA</textarea>
                     const numRows = Math.ceil(1123 / spacingY) + 2;
                     const numCols = Math.ceil(794 / spacingX) + 2;
                     
+                    // Generar offsets aleatorios para cada fila (pero fijos por fila)
+                    const rowOffsets = [];
+                    for (let i = 0; i < numRows + 2; i++) {
+                        rowOffsets.push(Math.random() * spacingX);
+                    }
+                    
                     for (let row = -1; row < numRows; row++) {
+                        // Cada fila empieza en una posición aleatoria
+                        const rowOffset = rowOffsets[row + 1];
+                        
                         for (let col = -1; col < numCols; col++) {
-                            // Posición X con offset alternado por fila
-                            const offsetX = (row % 2 === 0) ? 0 : spacingX / 2;
-                            const x = col * spacingX + offsetX;
+                            // Posición X con offset aleatorio por fila
+                            const x = col * spacingX + rowOffset;
                             
                             // Posición Y con efecto ola
                             const wave = Math.sin((col + row * 0.5) * waveFrequency * Math.PI) * waveAmplitude;
