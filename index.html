@@ -136,6 +136,23 @@
             box-sizing: border-box;
         }
 
+        /* Fondo Pattern Style */
+        #print-area.is-fondo {
+            display: block !important;
+            position: relative;
+            padding: 0 !important;
+            background-color: var(--wood-brown);
+            overflow: hidden;
+        }
+
+        .pattern-icon {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            display: block !important;
+        }
+
         .h-col { font-size: 13px; font-weight: 900; }
         .r-idx { font-size: 11px; color: var(--gold-text); font-weight: bold; }
         
@@ -152,6 +169,58 @@
             align-items: center;
             overflow: hidden;
             white-space: nowrap;
+        }
+
+        .card-icon {
+            position: absolute;
+            bottom: 4px;
+            right: -6px; /* Pegado al borde pero sin tocar la línea verde */
+            width: 60px; /* Tamaño grande pero razonable */
+            height: 60px;
+            object-fit: contain;
+            z-index: 100;
+        }
+
+        .card-icon.patata {
+            filter: brightness(1.3) contrast(1.1); /* Patata un poco más clara */
+        }
+
+        /* Remolacha Special Style */
+        .card.special-remolacha .card-table {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .big-remolacha {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 1px rgba(255,255,255,0.3)); /* Suaviza bordes */
+        }
+
+        .side-label {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
+            writing-mode: vertical-rl;
+            font-size: 10px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .left-numbers {
+            position: absolute;
+            left: 5px;
+            top: 4px;
+            bottom: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--gold-text);
         }
 
         @media print {
@@ -226,19 +295,27 @@ PIRULETA</textarea>
             const users = [
                 {
                     name: "Jesús",
-                    words: ["Olivia", "Lunar", "Pedo", "Cachivache", "Caixabank", "Barafunda", "Tenis", "Los Lunnis", "Málaga", "Melón", "Remusgo", "Fany", "Churro", "LoL", "Ñaca-Ñaca", "Frankenstein", "Holocausto", "Teresa", "Trauma", "Pug", "Tostón", "Pedro Sánchez", "Tocayo", "Hitler", "Arroba", "Caquímico", "Cachondo", "Pelusa", "Zambomba", "Latifundio"]
+                    words: ["Olivia", "Lunar", "Cachondo", "Cachivache", "Caixabank", "Barafunda", "Tenis", "Los Lunnis", "Málaga", "Melón", "Remusgo", "Fany", "Churro", "Latifundio", "Ñaca-Ñaca", "Frankenstein", "Holocausto", "Teresa", "Trauma", "Pug", "Tostón", "Pedro Sánchez", "Tocayo", "Hitler", "Arroba", "Caquímico", "Pedo", "Pelusa", "Zambomba", "LoL"]
                 },
                 {
                     name: "Olivia",
-                    words: ["OT", "youtube", "psicologa", "marido", "remolacha", "salamanca", "Adoptar", "perxita", "Anillo", "raul", "guapa", "libro", "Helado", "lila", "provolone", "granada", "sexo", "bad bunny", "minecraft", "gafas", "burdeo", "kinder bueno", "asturias", "paula", "adoptar", "sunny", "Florencia", "cumpleaños", "Fortnite", "salmon"]
+                    words: ["salmon", "youtube", "psicologa", "marido", "remolacha", "salamanca", "Adoptar", "perxita", "Anillo", "Florencia", "guapa", "libro", "Helado", "lila", "provolone", "granada", "sexo", "bad bunny", "minecraft", "gafas", "burdeo", "kinder bueno", "asturias", "paula", "adoptar", "sunny", "raul", "cumpleaños", "Fortnite", "OT"]
                 },
                 {
                     name: "Fran",
-                    words: ["shushi", "Donut", "Limonada", "maduro", "kfc", "raton", "jamon asado", "muglia", "Sushi", "Horny", "Bruja", "lesbiana", "Nocilla", "fornite", "Bulldog", "crotolamo", "Pionono", "Mambo", "Tulipán", "kebab", "kaisen", "Amor", "Tarot", "Lencería", "Xiaomi", "stanley", "Afrodita", "la veneno", "cuernos", "cebolla"]
+                    words: ["cebolla", "Afrodita", "Limonada", "maduro", "shushi", "raton", "jamon asado", "muglia", "Sushi", "Horny", "Bruja", "lesbiana", "Nocilla", "fornite", "Bulldog", "crotolamo", "Pionono", "Mambo", "Tulipán", "kebab", "kaisen", "Amor", "Tarot", "Lencería", "Xiaomi", "stanley", "Donut", "la veneno", "cuernos", "kfc"]
                 },
                 {
                     name: "Sergio",
-                    words: ["Asturias", "Sergio", "Psicología", "Freud", "Lol", "Lucía", "Mireia", "Evelyn Hugo", "Impostor", "Condón", "Málaga", "Golden", "Pawla", "Noni", "Carcassonne", "Gafas", "Sara", "Fran", "Eztizen", "Sexo", "Lucas", "Mamada", "Romen", "AuronPlay", "Granada", "Husky", "Lubricante", "Jesús", "Hitler", "Pug"]
+                    words: ["Asturias", "Sergio", "Psicología", "Freud", "Lubricante", "Lucía", "Mireia", "Evelyn Hugo", "Impostor", "Condón", "Málaga", "Golden", "Pawla", "Noni", "Carcassonne", "Gafas", "Sara", "Fran", "Eztizen", "Sexo", "Lucas", "Mamada", "Romen", "AuronPlay", "Granada", "Husky", "Lol", "Jesús", "Hitler", "Pug"]
+                },
+                {
+                    name: "Remolacha",
+                    words: Array(30).fill("REMOLACHA")
+                },
+                {
+                    name: "Fondo",
+                    words: []
                 }
             ];
 
@@ -265,37 +342,172 @@ PIRULETA</textarea>
                 container.innerHTML = '';
                 const allLines = input.value.trim().split('\n');
                 const words = allLines.map(w => w.trim()).filter(w => w !== '');
+                const currentUser = users[currentUserIndex];
                 
-                // Print exactly 8 cards (all with same words for now)
-                for (let i = 0; i < 8; i++) {
-                    container.appendChild(createCard(i + 1, words));
+                if (currentUser.name === "Fondo") {
+                    container.classList.add('is-fondo');
+                    const icons = ['remolacha.png', 'patata.png', 'nabo.png'];
+                    
+                    // Filas ordenadas con efecto ola
+                    const spacingX = 22; // Espacio horizontal entre iconos
+                    const spacingY = 32; // Espacio vertical entre filas
+                    const waveAmplitude = 6; // Amplitud de la ola
+                    const waveFrequency = 0.15; // Frecuencia de la ola
+                    
+                    const numRows = Math.ceil(1123 / spacingY) + 2;
+                    const numCols = Math.ceil(794 / spacingX) + 2;
+                    
+                    for (let row = -1; row < numRows; row++) {
+                        for (let col = -1; col < numCols; col++) {
+                            // Posición X con offset alternado por fila
+                            const offsetX = (row % 2 === 0) ? 0 : spacingX / 2;
+                            const x = col * spacingX + offsetX;
+                            
+                            // Posición Y con efecto ola
+                            const wave = Math.sin((col + row * 0.5) * waveFrequency * Math.PI) * waveAmplitude;
+                            const y = row * spacingY + wave;
+                            
+                            const img = document.createElement('img');
+                            // Iconos alternando ordenadamente: cada fila empieza con icono diferente
+                            const iconIndex = (col + row) % 3;
+                            img.src = icons[iconIndex];
+                            img.className = 'pattern-icon';
+                            
+                            // Rotación suave siguiendo la ola
+                            const rotation = wave * 2;
+                            
+                            img.style.top = y + 'px';
+                            img.style.left = x + 'px';
+                            img.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+                            
+                            container.appendChild(img);
+                        }
+                    }
+                } else {
+                    container.classList.remove('is-fondo');
+                    // Print exactly 8 cards
+                    for (let i = 0; i < 8; i++) {
+                        let icon = (i === 7) ? 'nabo.png' : 'patata.png';
+                        if (currentUser.name === "Remolacha") {
+                            icon = 'remolacha.png';
+                        }
+                        container.appendChild(createCard(i + 1, words, icon, currentUser.name === "Remolacha"));
+                    }
                 }
             }
 
-            function createCard(id, wordsList) {
+            function createCard(id, wordsList, iconPath, isSpecial = false) {
                 const cardDiv = document.createElement('div');
-                cardDiv.className = 'card';
+                cardDiv.className = 'card' + (isSpecial ? ' special-remolacha' : '');
                 
                 let html = `
-                    <div class="card-id">${id}</div>
+                    ${isSpecial ? '' : `<div class="card-id">${id}</div>`}
                     <div class="card-table">
+                `;
+
+                if (isSpecial) {
+                    html += `
+                        <div class="left-numbers">
+                            ${Array.from({length: 10}, (_, i) => `<div>${i + 1}</div>`).join('')}
+                        </div>
+                        <img src="remolacha.png" class="big-remolacha">
+                        <div class="side-label">REMOLACHA</div>
+                    `;
+                } else {
+                    html += `
                         <div class="h-col"></div>
                         <div class="h-col">A</div>
                         <div class="h-col">B</div>
                         <div class="h-col">C</div>
-                `;
+                    `;
 
-                for (let r = 0; r < 10; r++) {
-                    html += `<div class="r-idx">${r + 1}</div>`;
-                    for (let c = 0; c < 3; c++) {
-                        const word = wordsList[r * 3 + c] || "";
-                        html += `<div class="word-cell">${word}</div>`;
+                    for (let r = 0; r < 10; r++) {
+                        html += `<div class="r-idx">${r + 1}</div>`;
+                        for (let c = 0; c < 3; c++) {
+                            const word = wordsList[r * 3 + c] || "";
+                            html += `<div class="word-cell">${word}</div>`;
+                        }
                     }
                 }
 
-                html += `</div>`;
+                html += `
+                    </div>
+                    <img src="${iconPath}" class="card-icon ${iconPath.split('.')[0]}">
+                `;
                 cardDiv.innerHTML = html;
                 return cardDiv;
+            }
+
+            // Algoritmo Poisson Disk Sampling - distribución natural y densa
+            function poissonDiskSampling(width, height, minDist, k) {
+                const cellSize = minDist / Math.SQRT2;
+                const gridWidth = Math.ceil(width / cellSize);
+                const gridHeight = Math.ceil(height / cellSize);
+                const grid = new Array(gridWidth * gridHeight).fill(null);
+                const points = [];
+                const active = [];
+
+                function gridIndex(x, y) {
+                    const gx = Math.floor(x / cellSize);
+                    const gy = Math.floor(y / cellSize);
+                    return gx + gy * gridWidth;
+                }
+
+                function addPoint(x, y) {
+                    const p = {x, y};
+                    points.push(p);
+                    active.push(p);
+                    grid[gridIndex(x, y)] = p;
+                }
+
+                function isValid(x, y) {
+                    if (x < 0 || x >= width || y < 0 || y >= height) return false;
+                    
+                    const gx = Math.floor(x / cellSize);
+                    const gy = Math.floor(y / cellSize);
+                    
+                    for (let dx = -2; dx <= 2; dx++) {
+                        for (let dy = -2; dy <= 2; dy++) {
+                            const nx = gx + dx;
+                            const ny = gy + dy;
+                            if (nx >= 0 && nx < gridWidth && ny >= 0 && ny < gridHeight) {
+                                const neighbor = grid[nx + ny * gridWidth];
+                                if (neighbor) {
+                                    const dist = Math.hypot(x - neighbor.x, y - neighbor.y);
+                                    if (dist < minDist) return false;
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                }
+
+                // Empezar con un punto en el centro
+                addPoint(width / 2, height / 2);
+
+                while (active.length > 0) {
+                    const idx = Math.floor(Math.random() * active.length);
+                    const p = active[idx];
+                    let found = false;
+
+                    for (let i = 0; i < k; i++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = minDist + Math.random() * minDist;
+                        const nx = p.x + Math.cos(angle) * dist;
+                        const ny = p.y + Math.sin(angle) * dist;
+
+                        if (isValid(nx, ny)) {
+                            addPoint(nx, ny);
+                            found = true;
+                        }
+                    }
+
+                    if (!found) {
+                        active.splice(idx, 1);
+                    }
+                }
+
+                return points;
             }
 
             previewBtn.onclick = refreshCards;
